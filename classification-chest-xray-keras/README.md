@@ -1,13 +1,11 @@
-# **Chest_Xray using Deep Learning and Keras Library**
+# **Pneumonia Detection by Classifying Chest X-ray Images Using Deep Learning and the Keras Library**
 ![photo](https://i.imgur.com/jZqpV51.png)
 
-**This is an Educational Project for Graduates to practise the following tasks:**
-
-*(I do not claim any innovation or outstanding performance)*
-
-1. Image classification using deep learning and Keras library.
-2. Loading grayscale images in JPEG forma, creating a dataset and generating corresponding lables.
-3. Handling imbalanced dataset and improving model performance.
+**This is an educational project for graduate students to practice the following tasks:**
+1. Whole-image classification using deep learning
+2. Python programming utilizing the Keras library
+3. Loading grayscale images in JPEG format, creating a dataset, and generating corresponding labels
+4. Handling imbalanced datasets and improving model performance
 
 ## Dataset Information
 The dataset is available in the following link as *"ChestXRay2017.zip"*:
