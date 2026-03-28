@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Colab Setup Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e1117;
+    --surface: #161b27;
+    --surface2: #1e2535;
+    --border: #2a3347;
+    --accent: #f7a234;
+    --accent2: #e8734a;
+    --text: #e8eaf0;
+    --muted: #7b8499;
+    --colab-orange: #f9ab00;
+    --colab-blue: #4285f4;
+    --green: #34a853;
+    --code-bg: #0d1117;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* Subtle grid bg */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(247,162,52,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(247,162,52,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 60px 32px 100px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 40px;
+    margin-bottom: 56px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(247,162,52,0.1);
+    border: 1px solid rgba(247,162,52,0.25);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  .badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    line-height: 1.15;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 16px;
+    max-width: 560px;
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 64px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .section:nth-child(2) { animation-delay: 0.1s; }
+  .section:nth-child(3) { animation-delay: 0.2s; }
+  .section:nth-child(4) { animation-delay: 0.3s; }
+
+  .section-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    opacity: 0.8;
+  }
+
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.7rem;
+    color: #fff;
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+
+  p { color: #c5c9d6; margin-bottom: 16px; }
+
+  /* Steps */
+  .steps { display: flex; flex-direction: column; gap: 16px; margin: 24px 0; }
+
+  .step {
+    display: flex;
+    gap: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .step:hover {
+    border-color: rgba(247,162,52,0.35);
+    transform: translateX(4px);
+  }
+
+  .step-num {
+    flex-shrink: 0;
+    width: 32px; height: 32px;
+    background: rgba(247,162,52,0.12);
+    border: 1px solid rgba(247,162,52,0.3);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .step-content { flex: 1; }
+
+  .step-title {
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+    font-size: 15px;
+  }
+
+  .step-desc { color: var(--muted); font-size: 14px; margin: 0; }
+
+  /* Visual mockup: Colab interface */
+  .colab-mockup {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin: 28px 0;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+
+  .colab-topbar {
+    background: #1f2937;
+    border-bottom: 1px solid #374151;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .colab-dots { display: flex; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ef4444; }
+  .dot-y { background: #f59e0b; }
+  .dot-g { background: #22c55e; }
+
+  .colab-title {
+    flex: 1;
+    text-align: center;
+    font-size: 13px;
+    color: #9ca3af;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .colab-logo {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 600; color: var(--colab-orange);
+  }
+
+  .colab-logo svg { width: 18px; height: 18px; }
+
+  .colab-menu {
+    background: #111827;
+    border-bottom: 1px solid #1f2937;
+    padding: 6px 16px;
+    display: flex; gap: 20px;
+  }
+
+  .menu-item {
+    font-size: 12px; color: #9ca3af;
+    cursor: pointer; padding: 2px 0;
+  }
+  .menu-item:hover { color: #fff; }
+
+  .colab-body { padding: 20px; }
+
+  .cell {
+    background: #0d1117;
+    border: 1px solid #21262d;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+
+  .cell-toolbar {
+    background: #161b22;
+    border-bottom: 1px solid #21262d;
+    padding: 6px 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .run-btn {
+    width: 20px; height: 20px;
+    background: var(--colab-blue);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+
+  .run-btn svg { width: 10px; height: 10px; fill: #fff; margin-left: 1px; }
+
+  .cell-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: #484f58;
+    letter-spacing: 0.05em;
+  }
+
+  .cell-code {
+    padding: 14px 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .py-kw { color: #ff7b72; }
+  .py-fn { color: #d2a8ff; }
+  .py-str { color: #a5d6ff; }
+  .py-cm { color: #484f58; }
+  .py-var { color: #e6edf3; }
+  .py-op { color: #ffa657; }
+
+  .cell-output {
+    background: #0d1117;
+    border-top: 1px solid #21262d;
+    padding: 10px 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: #7ee787;
+  }
+
+  /* Runtime selector diagram */
+  .runtime-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 24px 0;
+  }
+
+  .runtime-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 16px;
+    text-align: center;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .runtime-card:hover { border-color: rgba(247,162,52,0.4); transform: translateY(-2px); }
+  .runtime-card.recommended { border-color: rgba(247,162,52,0.5); background: rgba(247,162,52,0.05); }
+
+  .runtime-icon { font-size: 24px; margin-bottom: 8px; }
+  .runtime-name { font-weight: 600; color: #fff; font-size: 14px; margin-bottom: 4px; }
+  .runtime-desc { font-size: 12px; color: var(--muted); margin: 0; }
+  .rec-label {
+    display: inline-block;
+    background: rgba(247,162,52,0.15);
+    color: var(--accent);
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-top: 6px;
+    letter-spacing: 0.06em;
+  }
+
+  /* Code block */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 24px 0;
+  }
+
+  .code-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .code-lang {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .copy-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  pre {
+    padding: 22px 22px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.75;
+    overflow-x: auto;
+  }
+
+  /* Drive diagram */
+  .drive-diagram {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 28px;
+    margin: 28px 0;
+  }
+
+  .diagram-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+
+  .diag-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 22px;
+    text-align: center;
+    min-width: 130px;
+  }
+
+  .diag-box.highlight {
+    background: rgba(247,162,52,0.08);
+    border-color: rgba(247,162,52,0.4);
+  }
+
+  .diag-icon { font-size: 26px; margin-bottom: 6px; }
+  .diag-label { font-size: 13px; font-weight: 600; color: #fff; }
+  .diag-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  .arrow-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 8px;
+    gap: 2px;
+  }
+
+  .arrow-line {
+    width: 48px; height: 2px;
+    background: linear-gradient(90deg, var(--border), var(--accent));
+    position: relative;
+  }
+
+  .arrow-line::after {
+    content: '';
+    position: absolute;
+    right: -1px; top: -4px;
+    border-left: 8px solid var(--accent);
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+  }
+
+  .arrow-caption {
+    font-size: 10px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    white-space: nowrap;
+  }
+
+  /* Tip box */
+  .tip {
+    background: rgba(52,168,83,0.07);
+    border: 1px solid rgba(52,168,83,0.25);
+    border-radius: 10px;
+    padding: 14px 18px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin: 20px 0;
+  }
+
+  .tip-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .tip p { color: #86efac; font-size: 14px; margin: 0; }
+
+  .warn {
+    background: rgba(247,162,52,0.07);
+    border-color: rgba(247,162,52,0.25);
+  }
+  .warn p { color: #fcd34d; }
+
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 56px 0;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  @media (max-width: 600px) {
+    .runtime-grid { grid-template-columns: 1fr; }
+    .diagram-row { flex-direction: column; }
+    .arrow-connector { transform: rotate(90deg); margin: 8px 0; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="badge">📓 Python Guide</div>
+    <h1>Getting started with<br><em>Google Colab</em></h1>
+    <p class="subtitle">A complete guide to setting up your Python programming environment in Google Colab — no installation required.</p>
+  </div>
+
+  <!-- Section 1: What is Colab -->
+  <div class="section">
+    <div class="section-number">// 01 — Overview</div>
+    <h2>What is Google Colab?</h2>
+    <p>
+      Google Colaboratory (Colab) is a free, cloud-based Jupyter notebook environment that runs entirely in your browser. It requires no setup, gives you free access to GPUs, and lets you write and execute Python code in real time — perfect for data science, machine learning, and research workflows.
+    </p>
+    <p>
+      All you need is a Google account. Your notebooks are saved directly to your Google Drive.
+    </p>
+
+    <div class="runtime-grid">
+      <div class="runtime-card">
+        <div class="runtime-icon">💻</div>
+        <div class="runtime-name">CPU</div>
+        <p class="runtime-desc">Standard tasks, data processing, general Python</p>
+      </div>
+      <div class="runtime-card recommended">
+        <div class="runtime-icon">⚡</div>
+        <div class="runtime-name">GPU</div>
+        <p class="runtime-desc">Deep learning, model training, heavy computation</p>
+        <span class="rec-label">RECOMMENDED</span>
+      </div>
+      <div class="runtime-card">
+        <div class="runtime-icon">🔬</div>
+        <div class="runtime-name">TPU</div>
+        <p class="runtime-desc">Large-scale ML, TensorFlow workloads</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: Setup Steps -->
+  <div class="section">
+    <div class="section-number">// 02 — Setup</div>
+    <h2>Setting up your notebook</h2>
+    <p>Follow these steps to create and configure your first Google Colab notebook:</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Go to Google Colab</div>
+          <p class="step-desc">Visit <strong style="color:#f7a234">colab.research.google.com</strong> and sign in with your Google account.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Create a new notebook</div>
+          <p class="step-desc">Click <strong style="color:#fff">File → New notebook</strong>. A new <code style="color:#a5d6ff;font-family:DM Mono,monospace;font-size:13px">.ipynb</code> file will be created and saved to your Drive.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Change the runtime type (optional)</div>
+          <p class="step-desc">Go to <strong style="color:#fff">Runtime → Change runtime type</strong> and select <strong style="color:#f7a234">GPU</strong> if you plan to train machine learning models.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Write your first cell</div>
+          <p class="step-desc">Click inside a code cell, type your Python code, then press <strong style="color:#fff">Shift + Enter</strong> to run it.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-title">Install packages if needed</div>
+          <p class="step-desc">Use <code style="color:#a5d6ff;font-family:DM Mono,monospace;font-size:13px">!pip install package_name</code> directly in a cell to install any Python library.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Colab UI mockup -->
+    <div class="colab-mockup">
+      <div class="colab-topbar">
+        <div class="colab-dots">
+          <div class="dot dot-r"></div>
+          <div class="dot dot-y"></div>
+          <div class="dot dot-g"></div>
+        </div>
+        <div class="colab-title">Untitled notebook.ipynb</div>
+        <div class="colab-logo">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" fill="#f9ab00" opacity="0.2"/>
+            <path d="M8 12a4 4 0 1 0 8 0 4 4 0 0 0-8 0z" fill="#f9ab00"/>
+          </svg>
+          Colab
+        </div>
+      </div>
+      <div class="colab-menu">
+        <span class="menu-item">File</span>
+        <span class="menu-item">Edit</span>
+        <span class="menu-item">View</span>
+        <span class="menu-item">Insert</span>
+        <span class="menu-item">Runtime</span>
+        <span class="menu-item">Tools</span>
+        <span class="menu-item">Help</span>
+      </div>
+      <div class="colab-body">
+        <!-- Cell 1: install -->
+        <div class="cell">
+          <div class="cell-toolbar">
+            <div class="run-btn">
+              <svg viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg>
+            </div>
+            <span class="cell-type">[ 1 ]</span>
+          </div>
+          <div class="cell-code">
+            <span class="py-cm"># Install a library</span><br>
+            <span class="py-op">!</span><span class="py-fn">pip</span> <span class="py-var">install</span> <span class="py-str">numpy pandas matplotlib</span>
+          </div>
+          <div class="cell-output">✓ Successfully installed numpy-1.26.4 pandas-2.2.1 matplotlib-3.8.3</div>
+        </div>
+        <!-- Cell 2: hello world -->
+        <div class="cell">
+          <div class="cell-toolbar">
+            <div class="run-btn">
+              <svg viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg>
+            </div>
+            <span class="cell-type">[ 2 ]</span>
+          </div>
+          <div class="cell-code">
+            <span class="py-kw">import</span> <span class="py-var">numpy</span> <span class="py-kw">as</span> <span class="py-var">np</span><br>
+            <span class="py-fn">print</span>(<span class="py-str">"Hello from Google Colab! 🚀"</span>)<br>
+            <span class="py-fn">print</span>(<span class="py-str">f"NumPy version: </span><span class="py-op">{</span><span class="py-var">np.__version__</span><span class="py-op">}</span><span class="py-str">"</span>)
+          </div>
+          <div class="cell-output">Hello from Google Colab! 🚀<br>NumPy version: 1.26.4</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <div class="tip-icon">💡</div>
+      <p><strong>Keyboard shortcut:</strong> Press <code style="background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:4px;font-family:DM Mono,monospace">Ctrl + M B</code> to insert a new cell below, and <code style="background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:4px;font-family:DM Mono,monospace">Shift + Enter</code> to run the current cell.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Section 3: Mount Google Drive -->
+  <div class="section">
+    <div class="section-number">// 03 — Google Drive</div>
+    <h2>Mounting Google Drive</h2>
+    <p>
+      By default, files you create in Colab are temporary and lost when the session ends. Mounting your Google Drive gives your notebook permanent access to your files — datasets, saved models, outputs — so nothing is lost between sessions.
+    </p>
+
+    <!-- Drive flow diagram -->
+    <div class="drive-diagram">
+      <p style="text-align:center;font-size:12px;color:var(--muted);font-family:DM Mono,monospace;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:24px;">How mounting works</p>
+      <div class="diagram-row">
+        <div class="diag-box">
+          <div class="diag-icon">📓</div>
+          <div class="diag-label">Colab Notebook</div>
+          <div class="diag-sub">Your runtime session</div>
+        </div>
+        <div class="arrow-connector">
+          <div class="arrow-line"></div>
+          <div class="arrow-caption">mount()</div>
+        </div>
+        <div class="diag-box highlight">
+          <div class="diag-icon">📁</div>
+          <div class="diag-label">/content/drive</div>
+          <div class="diag-sub">Local mount point</div>
+        </div>
+        <div class="arrow-connector">
+          <div class="arrow-line"></div>
+          <div class="arrow-caption">syncs to</div>
+        </div>
+        <div class="diag-box">
+          <div class="diag-icon">☁️</div>
+          <div class="diag-label">Google Drive</div>
+          <div class="diag-sub">Your cloud storage</div>
+        </div>
+      </div>
+    </div>
+
+    <p>Paste the following code into a cell and run it. You will be prompted to authorize access to your Google Drive — click the link, sign in, and copy the authorization code back into the field.</p>
+
+    <!-- Code block -->
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-lang">Python</span>
+        <button class="copy-btn" onclick="
+          navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText);
+          this.textContent='Copied!';
+          setTimeout(()=>this.textContent='Copy',2000)
+        ">Copy</button>
+      </div>
+      <pre><span class="py-cm"># Step 1: Import the drive module from Google Colab</span>
+<span class="py-kw">from</span> <span class="py-var">google.colab</span> <span class="py-kw">import</span> <span class="py-fn">drive</span>
+
+<span class="py-cm"># Step 2: Mount Google Drive at /content/drive</span>
+<span class="py-fn">drive</span>.<span class="py-fn">mount</span>(<span class="py-str">'/content/drive'</span>)
+
+<span class="py-cm"># Step 3: Verify it's mounted by listing Drive contents</span>
+<span class="py-kw">import</span> <span class="py-var">os</span>
+
+<span class="py-var">drive_path</span> <span class="py-op">=</span> <span class="py-str">'/content/drive/MyDrive'</span>
+<span class="py-fn">print</span>(<span class="py-str">"Files in your Google Drive:"</span>)
+<span class="py-kw">for</span> <span class="py-var">item</span> <span class="py-kw">in</span> <span class="py-fn">os.listdir</span>(<span class="py-var">drive_path</span>):
+    <span class="py-fn">print</span>(<span class="py-str">f"  📄 </span><span class="py-op">{</span><span class="py-var">item</span><span class="py-op">}</span><span class="py-str">"</span>)</pre>
+    </div>
+
+    <div class="tip">
+      <div class="tip-icon">✅</div>
+      <p>After running, you will see <strong>Mounted at /content/drive</strong> as the output. Your entire Google Drive is now accessible from the path <code style="background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:4px;font-family:DM Mono,monospace">/content/drive/MyDrive/</code>.</p>
+    </div>
+
+    <p>Once mounted, you can read and write files just like any local path:</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-lang">Python — Reading & Writing files</span>
+        <button class="copy-btn" onclick="
+          navigator.clipboard.writeText(this.closest('.code-block').querySelector('pre').innerText);
+          this.textContent='Copied!';
+          setTimeout(()=>this.textContent='Copy',2000)
+        ">Copy</button>
+      </div>
+      <pre><span class="py-kw">import</span> <span class="py-var">pandas</span> <span class="py-kw">as</span> <span class="py-var">pd</span>
+
+<span class="py-cm"># Read a CSV file from your Drive</span>
+<span class="py-var">df</span> <span class="py-op">=</span> <span class="py-var">pd</span>.<span class="py-fn">read_csv</span>(<span class="py-str">'/content/drive/MyDrive/your_folder/data.csv'</span>)
+<span class="py-fn">print</span>(<span class="py-var">df</span>.<span class="py-fn">head</span>())
+
+<span class="py-cm"># Save a file back to your Drive</span>
+<span class="py-var">df</span>.<span class="py-fn">to_csv</span>(<span class="py-str">'/content/drive/MyDrive/your_folder/output.csv'</span>, <span class="py-var">index</span><span class="py-op">=</span><span class="py-kw">False</span>)
+<span class="py-fn">print</span>(<span class="py-str">"File saved to Google Drive successfully!"</span>)</pre>
+    </div>
+
+    <div class="tip warn">
+      <div class="tip-icon">⚠️</div>
+      <p><strong>Note:</strong> You need to mount Drive every time you start a new Colab session. The mount does not persist between sessions, but your files on Drive remain safe.</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>Made with ❤️ for the research community &nbsp;·&nbsp; <a href="https://colab.research.google.com">Open Google Colab →</a></p>
+  </div>
+
+</div>
+</body>
+</html>
