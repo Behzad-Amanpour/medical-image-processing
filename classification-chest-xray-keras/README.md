@@ -1,4 +1,4 @@
-# **Pneumonia Detection by Classifying Chest X-ray Images Using Deep Learning and the Keras Library**
+# **Pneumonia Detection by Classification of Chest X-ray Images Using Deep Learning and the Keras Library**
 ![photo](https://i.imgur.com/jZqpV51.png)
 
 **This is an educational project for graduate students to practice the following tasks:**
@@ -9,9 +9,12 @@
 
 ## Source Dataset
 The dataset is available [here](https://data.mendeley.com/datasets/rscbjbr9sj/2) as "ChestXRay2017.zip".
-The dataset is available in the following link as *"ChestXRay2017.zip"*:
-- (https://data.mendeley.com/datasets/rscbjbr9sj/2)
+The file should be present on your google drive. You can either download the ZIP file manually and upload it to your Google Drive, or run a python code on your google colab to directly download it on your google drive
 
+### Unzipping Data on Google Drive
+The following Python code can be run in a Google Colab notebook to unzip the dataset file on your Google Drive.
+. Replace address1 with the path to the ZIP file you uploaded to your Google Drive
+. Replace address2 with the destination path where you want the extracted dataset to be stored
 
 ### Content of Images
 
