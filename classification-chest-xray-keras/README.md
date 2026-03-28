@@ -7,7 +7,8 @@
 3. Loading grayscale images in JPEG format, creating a dataset, and generating corresponding labels
 4. Handling imbalanced datasets and improving model performance
 
-## Dataset Information
+## Source Dataset
+The dataset is available [here](https://data.mendeley.com/datasets/rscbjbr9sj/2) as "ChestXRay2017.zip".
 The dataset is available in the following link as *"ChestXRay2017.zip"*:
 - (https://data.mendeley.com/datasets/rscbjbr9sj/2)
 
